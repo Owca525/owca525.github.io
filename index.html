@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
     <body>
+        <span id="failed"></span>
         <script>
             function initial() {
                 const params = new URLSearchParams(window.location.search);
@@ -20,6 +21,5 @@
             }
             if (!initial()) document.getElementById("failed").innerText = "Failed open deeplink"
         </script>
-        <span id="failed"></span>
     </body>
 </html>
