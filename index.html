@@ -2,20 +2,23 @@
 <html>
     <body>
         <script>
-            const params = new URLSearchParams(window.location.search);
+            function initial() {
+                const params = new URLSearchParams(window.location.search);
 
-            const id = params.get('id');
-            const player = params.get('player');
+                const id = params.get('id');
+                const player = params.get('player');
 
-            if (id) {
-                window.location.href = "steam://open"
-                return
+                if (id) {
+                    window.location.href = "steam://open"
+                    return true
+                }
+                if (player) {
+                    window.location.href = "steam://open"
+                    return true
+                }
+                return false
             }
-            if (player) {
-                window.location.href = "steam://open"
-                return
-            }
-            document.getElementById("failed").innerText = "Failed open deeplink"
+            if (!initial()) document.getElementById("failed").innerText = "Failed open deeplink"
         </script>
         <span id="failed"></span>
     </body>
