@@ -1,16 +1,165 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8" />
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self' https: data:; script-src 'self'; style-src 'self' 'unsafe-inline' *; img-src *; media-src * blob:; unsafe-eval;"
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://github.com/Owca525/animu/blob/electron/resources/icon.png?raw=true"
     />
-    <link rel="stylesheet" href="" id="theme-stylesheet">
-    <script type="module" src="./assets/index-CS06xDUF.js"></script>
-    <link rel="stylesheet" href="./assets/style-DayD0-wG.css">
+    <style>
+      :root {
+        --text: #ebebeb;
+
+        /* Background */
+        --first-layer: #181818;
+        /* First layer, background only */
+        --second-layer: #1f1f1f;
+
+        /* Colors */
+        --green-one: #549e72;
+        --green-background: #313332;
+        --green-text: #eaf3ee;
+
+        --blue-one: #385da9;
+        --blue-background: #212328;
+        --blue-text: #bfcbe3;
+      }
+
+      * {
+        color: var(--text);
+        font-family: Arial, Helvetica, sans-serif;
+        padding: 0;
+        margin: 0;
+        user-select: none;
+      }
+
+      body {
+        background-color: var(--first-layer);
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: center;
+        height: 100%;
+        width: 100%;
+      }
+
+      html {
+        height: 100vh;
+        width: 100vw;
+      }
+
+      .container {
+        height: max-content;
+        background-color: var(--second-layer);
+        padding: 12px;
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .image {
+        border-radius: 12px;
+        max-height: 280px;
+        width: max-content;
+        height: max-content;
+        aspect-ratio: 2 / 3;
+      }
+
+      .title {
+        font-size: 1.2em;
+        user-select: all;
+      }
+
+      .time {
+        user-select: all;
+      }
+
+      button {
+        background-color: var(--blue-background);
+        border: none;
+        border-radius: 12px;
+        padding: 8px 12px;
+        cursor: pointer;
+        font-size: 1em;
+        transition: background-color 150ms ease-in-out;
+      }
+
+      button:hover {
+        background-color: var(--blue-one);
+      }
+
+      button.a {
+        background-color: var(--green-background);
+      }
+
+      button.a:hover {
+        background-color: var(--green-one);
+      }
+
+      .disable {
+        display: none;
+      }
+    </style>
   </head>
-  <body id="root">
+
+  <script>
+    function formatTime(seconds) {
+      if (!seconds) return "0:00";
+      const hours = Math.floor(seconds / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      const secs = Math.floor(seconds % 60);
+      const hoursPart = hours > 0 ? `${hours}:` : "";
+      return `${hoursPart}${
+        hoursPart != "" && minutes < 10 ? "0" : ""
+      }${minutes}:${secs < 10 ? "0" : ""}${secs}`;
+    }
+  </script>
+
+  <body>
+    <main class="container disable">
+      <img src="" class="image" />
+      <span class="title"></span>
+      <span class="time disable"></span>
+      <div class="buttons">
+        <button onclick="anilist()">Open Anilist</button>
+        <button class="a" onclick="run()">Open Animu</button>
+      </div>
+    </main>
+    <main class="failed disable">
+      Failed Load anime
+    </main>
   </body>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const anime = params.get("anime");
+    function run() {
+      if (anime) window.location.href = `animu://${anime}`;
+    }
+    run();
+
+    try {
+      const parsed = JSON.parse(atob(anime));
+      function anilist() {
+        window.location.href = `https://anilist.co/anime/${parsed.animeID}`
+      }
+
+      document.title = `Anime ${parsed.title}`;
+      document.querySelector(".image").src = parsed.img;
+      document.querySelector(".title").innerHTML = parsed.title;
+      if (parsed.player) {
+        document.querySelector(".time").innerHTML = formatTime(
+          parsed.player.time
+        );
+        document.querySelector(".time").classList.remove("disable");
+      }
+      document.querySelector(".container").classList.remove("disable")
+    } catch (error) {
+      document.querySelector(".container").classList.add("disable")
+      document.querySelector(".failed").classList.remove("disable")
+      console.log("Error Fetching", error);
+    }
+  </script>
 </html>
