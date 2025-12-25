@@ -105,27 +105,14 @@
     </style>
   </head>
 
-  <script>
-    function formatTime(seconds) {
-      if (!seconds) return "0:00";
-      const hours = Math.floor(seconds / 3600);
-      const minutes = Math.floor((seconds % 3600) / 60);
-      const secs = Math.floor(seconds % 60);
-      const hoursPart = hours > 0 ? `${hours}:` : "";
-      return `${hoursPart}${
-        hoursPart != "" && minutes < 10 ? "0" : ""
-      }${minutes}:${secs < 10 ? "0" : ""}${secs}`;
-    }
-  </script>
-
   <body>
     <main class="container disable">
-      <img src="" class="image" />
+      <!-- <img src="" class="image" />
       <span class="title"></span>
-      <span class="time disable"></span>
+      <span class="time disable"></span> -->
       <div class="buttons">
-        <button onclick="anilist()">Open Anilist</button>
-        <button class="a" onclick="run()">Open Animu</button>
+        <button onclick="anilist()">Open in Anilist</button>
+        <button class="a" onclick="run()">Open in Animu</button>
       </div>
     </main>
     <main class="failed disable">
@@ -145,16 +132,7 @@
       function anilist() {
         window.location.href = `https://anilist.co/anime/${parsed.animeID}`
       }
-
-      document.title = `Anime ${parsed.title}`;
-      document.querySelector(".image").src = parsed.img;
-      document.querySelector(".title").innerHTML = parsed.title;
-      if (parsed.player) {
-        document.querySelector(".time").innerHTML = formatTime(
-          parsed.player.time
-        );
-        document.querySelector(".time").classList.remove("disable");
-      }
+      
       document.querySelector(".container").classList.remove("disable")
     } catch (error) {
       document.querySelector(".container").classList.add("disable")
