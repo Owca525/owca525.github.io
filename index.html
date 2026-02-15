@@ -1,7 +1,20 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <meta charset="UTF-8" />
+    <!-- Open Graph (Discord, Facebook itd.) -->
+    <meta property="og:title" content="Animu" />
+    <meta property="og:description" content="Open This Anime in Animu Application" />
+    <meta property="og:image" content="https://github.com/Owca525/animu/blob/electron/resources/icon.png?raw=true" />
+    <meta property="og:url" content="https://github.com/Owca525/animu?tab=readme-ov-file#animu" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Animu" />
+    <meta name="twitter:description" content="Open This Anime in Animu Application" />
+    <meta name="twitter:image" content="https://github.com/Owca525/animu/blob/electron/resources/icon.png?raw=true" />
+
     <link
       rel="icon"
       type="image/png"
@@ -115,9 +128,7 @@
         <button class="a" onclick="run()">Open in Animu</button>
       </div>
     </main>
-    <main class="failed disable">
-      Failed Load anime
-    </main>
+    <main class="failed disable">Failed Load anime</main>
   </body>
   <script>
     const params = new URLSearchParams(window.location.search);
@@ -130,13 +141,13 @@
     try {
       const parsed = atob(anime).split(",");
       function anilist() {
-        window.location.href = `https://anilist.co/anime/${parsed[0]}`
+        window.location.href = `https://anilist.co/anime/${parsed[0]}`;
       }
-      
-      document.querySelector(".container").classList.remove("disable")
+
+      document.querySelector(".container").classList.remove("disable");
     } catch (error) {
-      document.querySelector(".container").classList.add("disable")
-      document.querySelector(".failed").classList.remove("disable")
+      document.querySelector(".container").classList.add("disable");
+      document.querySelector(".failed").classList.remove("disable");
       console.log("Error Fetching", error);
     }
   </script>
